@@ -138,15 +138,12 @@ const App = () => {
     
     // Set a welcome message on component mount
     useEffect(() => {
-        const welcomeMessage = {
-            type: 'list',
-            content: {
-                title: "Hello! I'm your AI assistant. How can i help you today ??",
-                items: [
-                    
-                ]
-            }
+            const welcomeMessage = {
+            type: 'text',
+            content: "Hello! I'm your AI assistant. How can I help you!"
         };
+          
+      
         setMessageHistory([{ data: welcomeMessage, author: 'bot' }]);
     }, []);
 
