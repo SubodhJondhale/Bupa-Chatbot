@@ -99,7 +99,7 @@ const App = () => {
 
     useEffect(() => {
         // Establish WebSocket connection
-        ws.current = new WebSocket(socketurl);
+        ws.current = new WebSocket(socketUrl);
         ws.current.onopen = () => {
             console.log("WebSocket connected!");
             setReadyState('OPEN');
