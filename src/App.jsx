@@ -90,7 +90,7 @@ const MessageRenderer = ({ message }) => {
 
 const App = () => {
     // WebSocket connection URL (replace with your actual backend URL)
-    const [socketUrl] = useState('https://breezy-weeks-speak.loca.lt'); // Using a public echo server for demo
+    const [socketUrl] = useState('https://mean-donkeys-refuse.loca.lt'); // Using a public echo server for demo
     const [messageHistory, setMessageHistory] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [readyState, setReadyState] = useState('CONNECTING');
