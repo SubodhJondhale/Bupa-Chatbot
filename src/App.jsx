@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import socket from './socket';
 
 // --- Global Styles and Animations ---
 const GlobalStyles = () => (
@@ -89,69 +90,62 @@ const MessageRenderer = ({ message }) => {
 // --- Main Chat Component ---
 
 const App = () => {
-    // WebSocket connection URL (replace with your actual backend URL)
-    const [socketUrl] = useState('https://two-ideas-study.loca.lt'); // Using a public echo server for demo
     const [messageHistory, setMessageHistory] = useState([]);
     const [inputValue, setInputValue] = useState('');
-    const [readyState, setReadyState] = useState('CONNECTING');
-    const ws = useRef(null);
+    const [isConnected, setIsConnected] = useState(socket.connected);
+    const [userId, setUserId] = useState('');
+    const [accessToken, setAccessToken] = useState('');
     const messagesEndRef = useRef(null);
 
     useEffect(() => {
-        // Establish WebSocket connection
-        ws.current = new WebSocket(socketUrl);
-        ws.current.onopen = () => {
-            console.log("WebSocket connected!");
-            setReadyState('OPEN');
-        };
-        ws.current.onclose = () => {
-            console.log("WebSocket disconnected!");
-            setReadyState('CLOSED');
-        };
-        ws.current.onmessage = (event) => {
-            try {
-                // The backend should send a JSON string. We parse it here.
-                const parsedData = JSON.parse(event.data);
-                setMessageHistory((prev) => [...prev, { data: parsedData, author: 'bot' }]);
-            } catch (error) {
-                // Fallback for plain text messages
-                console.error("Could not parse incoming JSON: ", error);
-                const fallbackData = { type: 'text', content: event.data };
-                setMessageHistory((prev) => [...prev, { data: fallbackData, author: 'bot' }]);
-            }
-        };
-        ws.current.onerror = (error) => {
-            console.error("WebSocket error: ", error);
-            setReadyState('CLOSED');
-        };
+        const urlParams = new URLSearchParams(window.location.search);
+        setUserId(urlParams.get('userId'));
+        setAccessToken(urlParams.get('accessToken'));
+        // Socket.io event listeners
+        socket.on('connect', () => {
+            console.log("Socket.io connected!");
+            setIsConnected(true);
+        });
+
+        socket.on('disconnect', () => {
+            console.log("Socket.io disconnected!");
+            setIsConnected(false);
+        });
+
+        socket.on('welcome_message', (data) => {
+            const welcomeMessage = {
+                type: 'text',
+                content: data
+            };
+            setMessageHistory([{ data: welcomeMessage, author: 'bot' }]);
+        });
+
+        socket.on('ai_chat_response', (data) => {
+            const botMessage = {
+                type: 'text',
+                content: data.data
+            };
+            setMessageHistory((prev) => [...prev, { data: botMessage, author: 'bot' }]);
+        });
 
         // Cleanup on component unmount
         return () => {
-            ws.current.close();
+            socket.off('connect');
+            socket.off('disconnect');
+            socket.off('welcome_message');
+            socket.off('ai_chat_response');
         };
-    }, [socketUrl]);
+    }, []);
 
     // Scroll to the bottom of the message list when new messages arrive
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messageHistory]);
     
-    // Set a welcome message on component mount
-    useEffect(() => {
-            const welcomeMessage = {
-            type: 'text',
-            content: "Hello! I'm your AI assistant. How can I help you!"
-        };
-          
-      
-        setMessageHistory([{ data: welcomeMessage, author: 'bot' }]);
-    }, []);
-
-    const sendMessage = useCallback((message) => {
-        if (ws.current && ws.current.readyState === WebSocket.OPEN) {
-            // For this demo, we send the user's plain text.
-            // A more advanced implementation might also send JSON from the client.
-            ws.current.send(message);
+    const sendMessage = useCallback((payload) => {
+        if (socket.connected) {
+            console.log('Sending message:', payload);
+            socket.emit('ai_chat_success', payload);
         }
     }, []);
 
@@ -162,10 +156,17 @@ const App = () => {
                 content: inputValue
             };
             setMessageHistory((prev) => [...prev, { data: userMessage, author: 'user' }]);
-            sendMessage(inputValue);
+            
+            const payload = {
+                message: inputValue,
+                userId: userId,
+                accessToken: accessToken
+            };
+
+            sendMessage(payload);
             setInputValue('');
         }
-    }, [inputValue, sendMessage]);
+    }, [inputValue, sendMessage, userId, accessToken]);
 
     const handleInputChange = (event) => {
         setInputValue(event.target.value);
@@ -177,12 +178,7 @@ const App = () => {
         }
     };
 
-    const connectionStatus = {
-        'CONNECTING': 'Connecting',
-        'OPEN': 'Connected',
-        'CLOSING': 'Closing',
-        'CLOSED': 'Disconnected',
-    }[readyState];
+    const connectionStatus = isConnected ? 'Connected' : 'Disconnected';
 
     return (
         <>
@@ -195,7 +191,7 @@ const App = () => {
                         </div>
                         <div>
                             <h1 className="text-2xl font-semibold text-gray-900">Bupa Assistant</h1>
-                            <p className={`text-base transition-colors duration-300 ${readyState === 'OPEN' ? 'text-green-500' : 'text-yellow-500'}`}>
+                            <p className={`text-base transition-colors duration-300 ${isConnected ? 'text-green-500' : 'text-yellow-500'}`}>
                                ● {connectionStatus}
                             </p>
                         </div>
@@ -235,11 +231,11 @@ const App = () => {
                                 onKeyPress={handleKeyPress}
                                 placeholder="Ask me anything..."
                                 className="w-full px-6 py-4 text-lg border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 shadow-sm"
-                                disabled={readyState !== 'OPEN'}
+                                disabled={!isConnected}
                             />
                             <button
                                 onClick={handleSendClick}
-                                disabled={readyState !== 'OPEN' || !inputValue.trim()}
+                                disabled={!isConnected || !inputValue.trim()}
                                 className="bg-gradient-to-br from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed text-white p-4 rounded-full flex-shrink-0 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                             >
                                 <SendIcon />
