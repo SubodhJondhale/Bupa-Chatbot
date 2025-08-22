@@ -114,7 +114,8 @@ const App = () => {
         socket.on('welcome_message', (data) => {
             const welcomeMessage = {
                 type: 'text',
-                content: data
+                content: data,
+                timestamp: new Date()
             };
             setMessageHistory([{ data: welcomeMessage, author: 'bot' }]);
         });
@@ -122,7 +123,8 @@ const App = () => {
         socket.on('ai_chat_response', (data) => {
             const botMessage = {
                 type: 'text',
-                content: data.data
+                content: data.data,
+                timestamp: new Date()
             };
             setMessageHistory((prev) => [...prev, { data: botMessage, author: 'bot' }]);
         });
@@ -152,7 +154,8 @@ const App = () => {
         if (inputValue.trim()) {
             const userMessage = {
                 type: 'text',
-                content: inputValue
+                content: inputValue,
+                timestamp: new Date()
             };
             setMessageHistory((prev) => [...prev, { data: userMessage, author: 'user' }]);
             
@@ -210,6 +213,9 @@ const App = () => {
                                         : 'bg-white text-gray-800 rounded-bl-none border border-gray-200/80'
                                 }`}>
                                     <MessageRenderer message={message.data} />
+                                    <div className="text-xs text-right mt-2">
+                                        {new Date(message.data.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                    </div>
                                 </div>
                                  {message.author === 'user' && (
                                     <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
