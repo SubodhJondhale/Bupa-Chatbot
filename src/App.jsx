@@ -189,7 +189,7 @@ const App = () => {
                 <div className="flex flex-col h-full w-full md:h-[90vh] md:max-w-4xl md:rounded-2xl md:shadow-2xl md:overflow-hidden bg-gray-50">
                     <header className="bg-white/70 backdrop-blur-lg shadow-sm p-4 text-gray-800 flex items-center border-b border-gray-200/80 flex-shrink-0">
                         <div className="w-12 h-12 bg-gradient-to-tr from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mr-4 shadow-md">
-                            <img src={botLogo} alt="Bot Logo" className="w-10 h-10 rounded-full" />
+                            <img src={botLogo} alt="Bot Logo" className="w-10 h-10 rounded-full object-cover" />
                         </div>
                         <div>
                             <h1 className="text-2xl font-semibold text-gray-900">NAVI AI</h1>
@@ -204,7 +204,7 @@ const App = () => {
                             <div key={idx} className={`flex items-end gap-4 animate-fadeInUp ${message.author === 'user' ? 'justify-end' : 'justify-start'}`}>
                                 {message.author === 'bot' && (
                                     <div className="w-10 h-10 bg-white border border-gray-200 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
-                                        <img src={botLogo} alt="Bot Logo" className="w-8 h-8 rounded-full" />
+                                        <img src={botLogo} alt="Bot Logo" className="w-8 h-8 rounded-full object-cover" />
                                     </div>
                                 )}
                                 <div className={`max-w-xs md:max-w-md lg:max-w-3xl px-6 py-4 rounded-2xl shadow-md ${
@@ -219,7 +219,7 @@ const App = () => {
                                 </div>
                                  {message.author === 'user' && (
                                     <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
-                                        <img src={userLogo} alt="User Logo" className="w-8 h-8 rounded-full" />
+                                        <img src={userLogo} alt="User Logo" className="w-8 h-8 rounded-full object-cover" />
                                     </div>
                                 )}
                             </div>
