@@ -189,7 +189,7 @@ const App = () => {
                             <img src={botLogo} alt="Bot Logo" className="w-10 h-10 rounded-full" />
                         </div>
                         <div>
-                            <h1 className="text-2xl font-semibold text-gray-900">Bupa Assistant</h1>
+                            <h1 className="text-2xl font-semibold text-gray-900">NAVI AI</h1>
                             <p className={`text-base transition-colors duration-300 ${isConnected ? 'text-green-500' : 'text-yellow-500'}`}>
                                ● {connectionStatus}
                             </p>
