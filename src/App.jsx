@@ -95,6 +95,7 @@ const App = () => {
     const [userId, setUserId] = useState('');
     const [accessToken, setAccessToken] = useState('');
     const messagesEndRef = useRef(null);
+    const chatContainerRef = useRef(null);
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -140,7 +141,9 @@ const App = () => {
 
     // Scroll to the bottom of the message list when new messages arrive
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        }
     }, [messageHistory]);
     
     const sendMessage = useCallback((payload) => {
@@ -199,7 +202,7 @@ const App = () => {
                         </div>
                     </header>
 
-                    <main className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 bg-gradient-to-br from-gray-50 to-blue-100">
+                    <main ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 bg-gradient-to-br from-gray-50 to-blue-100">
                         {messageHistory.map((message, idx) => (
                             <div key={idx} className={`flex items-end gap-4 animate-fadeInUp ${message.author === 'user' ? 'justify-end' : 'justify-start'}`}>
                                 {message.author === 'bot' && (
