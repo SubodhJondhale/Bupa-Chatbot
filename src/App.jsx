@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import socket from './socket';
+import userLogo from './assets/user-logo.jpg';
+import botLogo from './assets/bot-logo.jpg';
+import StructuredContent from './StructuredContent';
 
 // --- Global Styles and Animations ---
 const GlobalStyles = () => (
@@ -26,6 +29,11 @@ const GlobalStyles = () => (
             overflow-x: auto;
             white-space: pre-wrap;
         }
+
+        ol {
+            list-style-type: decimal;
+            padding-left: 2rem;
+        }
     `}</style>
 );
 
@@ -38,30 +46,21 @@ const SendIcon = () => (
     </svg>
 );
 
-const BotIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 text-blue-500">
-        <path fillRule="evenodd" d="M4.5 3.75a3 3 0 00-3 3v10.5a3 3 0 003 3h15a3 3 0 003-3V6.75a3 3 0 00-3-3h-15zm4.125 3a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5zm5.25 2.25a2.25 2.25 0 114.5 0 2.25 2.25 0 01-4.5 0zM18.75 12a2.625 2.625 0 100 5.25 2.625 2.625 0 000-5.25zM12.75 14.625a2.625 2.625 0 115.25 0 2.625 2.625 0 01-5.25 0zM5.25 12a2.625 2.625 0 100 5.25 2.625 2.625 0 000-5.25z" clipRule="evenodd" />
-    </svg>
-);
-
-const UserIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 text-white">
-        <path fillRule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" clipRule="evenodd" />
-    </svg>
-);
 
 // --- Structured Message Renderer Components ---
 
 const TextRenderer = ({ content }) => (
-    <p className="text-xl leading-loose">{content}</p>
+    <div className="text-base leading-relaxed whitespace-pre-wrap break-words">
+        <StructuredContent content={content} />
+    </div>
 );
 
 const ListRenderer = ({ content }) => (
     <div>
-        {content.title && <h3 className="text-xl font-semibold mb-3">{content.title}</h3>}
-        <ul className="list-disc list-inside space-y-2">
+        {content.title && <h3 className="text-lg font-semibold mb-2">{content.title}</h3>}
+        <ul className="list-disc list-inside space-y-1">
             {content.items.map((item, index) => (
-                <li key={index} className="text-xl leading-loose">{item}</li>
+                <li key={index} className="text-base leading-relaxed">{item}</li>
             ))}
         </ul>
     </div>
@@ -187,7 +186,7 @@ const App = () => {
                 <div className="flex flex-col h-full w-full md:h-[90vh] md:max-w-4xl md:rounded-2xl md:shadow-2xl md:overflow-hidden bg-gray-50">
                     <header className="bg-white/70 backdrop-blur-lg shadow-sm p-4 text-gray-800 flex items-center border-b border-gray-200/80 flex-shrink-0">
                         <div className="w-12 h-12 bg-gradient-to-tr from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mr-4 shadow-md">
-                            <BotIcon />
+                            <img src={botLogo} alt="Bot Logo" className="w-10 h-10 rounded-full" />
                         </div>
                         <div>
                             <h1 className="text-2xl font-semibold text-gray-900">Bupa Assistant</h1>
@@ -202,7 +201,7 @@ const App = () => {
                             <div key={idx} className={`flex items-end gap-4 animate-fadeInUp ${message.author === 'user' ? 'justify-end' : 'justify-start'}`}>
                                 {message.author === 'bot' && (
                                     <div className="w-10 h-10 bg-white border border-gray-200 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
-                                        <BotIcon />
+                                        <img src={botLogo} alt="Bot Logo" className="w-8 h-8 rounded-full" />
                                     </div>
                                 )}
                                 <div className={`max-w-xs md:max-w-md lg:max-w-3xl px-6 py-4 rounded-2xl shadow-md ${
@@ -214,7 +213,7 @@ const App = () => {
                                 </div>
                                  {message.author === 'user' && (
                                     <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
-                                        <UserIcon />
+                                        <img src={userLogo} alt="User Logo" className="w-8 h-8 rounded-full" />
                                     </div>
                                 )}
                             </div>
