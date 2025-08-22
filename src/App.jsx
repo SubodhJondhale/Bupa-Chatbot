@@ -203,8 +203,8 @@ const App = () => {
                         {messageHistory.map((message, idx) => (
                             <div key={idx} className={`flex items-end gap-4 animate-fadeInUp ${message.author === 'user' ? 'justify-end' : 'justify-start'}`}>
                                 {message.author === 'bot' && (
-                                    <div className="w-10 h-10 bg-white border border-gray-200 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
-                                        <img src={botLogo} alt="Bot Logo" className="w-8 h-8 rounded-full object-cover" />
+                                    <div className="w-11 h-11 bg-gradient-to-br from-blue-300 to-indigo-400 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm border-2 border-blue-500">
+                                        <img src={botLogo} alt="Bot Logo" className="w-9 h-9 rounded-full object-cover" />
                                     </div>
                                 )}
                                 <div className={`max-w-xs md:max-w-md lg:max-w-3xl px-6 py-4 rounded-2xl shadow-md ${
@@ -218,8 +218,8 @@ const App = () => {
                                     </div>
                                 </div>
                                  {message.author === 'user' && (
-                                    <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
-                                        <img src={userLogo} alt="User Logo" className="w-8 h-8 rounded-full object-cover" />
+                                    <div className="w-11 h-11 bg-gradient-to-br from-blue-300 to-indigo-400 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm border-2 border-blue-500">
+                                        <img src={userLogo} alt="User Logo" className="w-9 h-9 rounded-full object-cover" />
                                     </div>
                                 )}
                             </div>
