@@ -105,20 +105,23 @@ const App = () => {
         socket.on('connect', () => {
             console.log("Socket.io connected!");
             setIsConnected(true);
+            // Automatically send 'hello' message on connection
+            const urlParams = new URLSearchParams(window.location.search);
+            const userIdParam = urlParams.get('userId');
+            const accessTokenParam = urlParams.get('accessToken');
+            if (userIdParam && accessTokenParam) {
+                const payload = {
+                    message: 'hello',
+                    userId: userIdParam,
+                    accessToken: accessTokenParam
+                };
+                sendMessage(payload);
+            }
         });
 
         socket.on('disconnect', () => {
             console.log("Socket.io disconnected!");
             setIsConnected(false);
-        });
-
-        socket.on('welcome_message', (data) => {
-            const welcomeMessage = {
-                type: 'text',
-                content: data,
-                timestamp: new Date()
-            };
-            setMessageHistory([{ data: welcomeMessage, author: 'bot' }]);
         });
 
         socket.on('ai_chat_response', (data) => {
@@ -134,7 +137,6 @@ const App = () => {
         return () => {
             socket.off('connect');
             socket.off('disconnect');
-            socket.off('welcome_message');
             socket.off('ai_chat_response');
         };
     }, []);
