@@ -14,7 +14,7 @@ import { io } from 'socket.io-client';
 // });
 
 // export default socket;
-const socketUrl = process.env.REACT_APP_SOCKET_URL || 'http://127.0.0.1:5000';
+const socketUrl = process.env.REACT_APP_SOCKET_URL ;
 const socket = io(socketUrl, {
     transports: ['websocket'],
     withCredentials: true,
