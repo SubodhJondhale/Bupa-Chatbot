@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client';
 
 // Replace with your actual backend URL
-const socketUrl = 'http://0.0.0.0:5000';
+const socketUrl = 'https://0.0.0.0:5000';
 // const socketUrl = 'https://0.0.0.0:5000';
 const socket = io(socketUrl, {
     transports: ['websocket'],
