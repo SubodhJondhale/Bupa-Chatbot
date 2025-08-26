@@ -2,7 +2,7 @@ import { io } from 'socket.io-client';
 
 // Replace with your actual backend URL
 // const socketUrl = 'https://cool-lions-cut.loca.lt';
-const socketUrl = 'http://localhost';
+const socketUrl = 'https://192.168.2.171';
   //const socketUrl = 'https://192.168.2.171:443';
 const socket = io(socketUrl, {
     transports: ['websocket'],
