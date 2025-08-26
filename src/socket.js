@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client';
 
 // Replace with your actual backend URL
-const socketUrl = 'http://127.0.0.1:5000';
+const socketUrl = 'https://cool-lions-cut.loca.lt';
 //const socketUrl = 'http://34.47.214.154:5000';
   //const socketUrl = 'https://subodh.live:5000';
 const socket = io(socketUrl, {
