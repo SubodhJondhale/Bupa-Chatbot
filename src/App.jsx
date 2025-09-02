@@ -258,7 +258,7 @@
 //         </>
 //     );
 // };
-
+//export default App;
 
 
 // updated code
@@ -526,4 +526,3 @@ const App = () => {
 
 export default App;
 
-export default App;
