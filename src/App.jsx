@@ -356,6 +356,7 @@ const App = () => {
     const [messageHistory, setMessageHistory] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [isConnected, setIsConnected] = useState(socket.connected);
+    const [cnId, setCnId] = useState('');
     const [userId, setUserId] = useState('');
     const [accessToken, setAccessToken] = useState('');
     const messagesEndRef = useRef(null);
@@ -371,8 +372,10 @@ const App = () => {
             setIsConnected(true);
             // Automatically send 'hello' message on connection
             const urlParams = new URLSearchParams(window.location.search);
+            const cnIdParam = urlParams.get('cnId');
             const userIdParam = urlParams.get('userId');
             const accessTokenParam = urlParams.get('accessToken');
+            console.log("cnId1111",cnIdParam)
             if (userIdParam && accessTokenParam) {
                 const payload = {
                     message: 'hello',
