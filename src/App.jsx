@@ -364,7 +364,7 @@ const App = () => {
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
-        setsetCnId(urlParams.get('cnId'));
+        setCnId(urlParams.get('cnId'));
         setUserId(urlParams.get('userId'));
         setAccessToken(urlParams.get('accessToken'));
         // Socket.io event listeners
