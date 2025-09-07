@@ -456,17 +456,17 @@ const App = () => {
             <GlobalStyles />
             <div className="flex items-center justify-center h-screen bg-gradient-to-br from-gray-100 to-gray-200 font-['Poppins',_sans-serif]">
                 <div className="flex flex-col h-full w-full md:h-[90vh] md:max-w-4xl md:rounded-2xl md:shadow-2xl md:overflow-hidden bg-gray-50">
-                    <header className="bg-white/70 backdrop-blur-lg shadow-sm p-4 text-gray-800 flex items-center border-b border-gray-200/80 flex-shrink-0">
+                   {/* <header className="bg-white/70 backdrop-blur-lg shadow-sm p-4 text-gray-800 flex items-center border-b border-gray-200/80 flex-shrink-0">
                         {/* <div className="w-12 h-12 bg-gradient-to-tr from-[#03335B] to-[#1279BE] rounded-full flex items-center justify-center mr-4 shadow-md">
                             <img src={botLogo} alt="Bot Logo" className="w-10 h-10 rounded-full object-cover" />
                         </div> */}
-                        <div>
+                     {/*   <div>
                             <h1 className="text-2xl font-semibold text-gray-900">Bupa Arabia</h1>
                             <p className={`text-base transition-colors duration-300 ${isConnected ? 'text-green-500' : 'text-yellow-500'}`}>
                                ● {connectionStatus}
-                            </p>
-                        </div>
-                    </header>
+                            </p> 
+                        </div>   
+                    </header> */}
 
 
                     <main ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 bg-gradient-to-br from-gray-50 to-gray-100">
