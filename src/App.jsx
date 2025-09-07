@@ -364,6 +364,7 @@ const App = () => {
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
+        setsetCnId(urlParams.get('cnId'));
         setUserId(urlParams.get('userId'));
         setAccessToken(urlParams.get('accessToken'));
         // Socket.io event listeners
@@ -380,7 +381,8 @@ const App = () => {
                 const payload = {
                     message: 'hello',
                     userId: userIdParam,
-                    accessToken: accessTokenParam
+                    accessToken: accessTokenParam,
+                    cnId:cnIdParam
                 };
                 sendMessage(payload);
             }
@@ -434,7 +436,8 @@ const App = () => {
             const payload = {
                 message: inputValue,
                 userId: userId,
-                accessToken: accessToken
+                accessToken: accessToken,
+                cnId: cnId
             };
 
             sendMessage(payload);
